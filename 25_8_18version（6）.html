@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transparent Performance Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+        }
+        
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+        
+        .containers {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        
+        .container {
+            position: absolute;
+            width: 8%;
+            height: 100px;
+            background-color: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 20;
+            /* 完全透明，无边框 */
+            border: none;
+            box-shadow: none;
+        }
+        
+        .container:hover {
+            /* 悬停时添加微弱的视觉反馈 */
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tooltip {
+            position: absolute;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            z-index: 100;
+            width: 280px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+        .week-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(52, 152, 219, 0.3);
+            position: relative;
+        }
+        
+        .week-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 35%;
+            width: 30%;
+            height: 2px;
+            background: #3498db;
+        }
+        
+        .data-display {
+            margin-bottom: 20px;
+        }
+        
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .data-row:last-child {
+            border-bottom: none;
+        }
+        
+        .data-label {
+            font-size: 17px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .data-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .target-value {
+            color: #3498db;
+        }
+        
+        .actual-value {
+            color: #e74c3c;
+        }
+        
+        .progress-container {
+            margin: 20px 0;
+            background: #f0f0f0;
+            border-radius: 8px;
+            height: 18px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 8px;
+            position: relative;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: white;
+            line-height: 18px;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+        }
+        
+        .tooltip-footer {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            white-space: nowrap; /* 防止换行 */
+        }
+        
+        .watermark {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 11px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <!-- 使用您指定的背景图片 -->
+  <img src="new-backgroud.jpg" alt="集装箱背景" class="background">
+    
+    <div class="containers">
+        <!-- 修改后的容器位置 -->
+        <div class="container" style="left: 17%; top: 200px;" onmouseover="showTooltip(event, 'Area China')" onmouseout="hideTooltip()">
+            <!-- 完全透明，无任何内容 -->
+        </div>
+        
+        <!-- 工具提示 -->
+        <div class="tooltip" id="tooltip">
+            <!-- Week 1作为小标题 -->
+            <div class="week-title">WEEK 1</div>
+            
+            <div class="data-display">
+                <div class="data-row">
+                    <span class="data-label">Target:</span>
+                    <span class="data-value target-value" id="targetValue">476</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Actual:</span>
+                    <span class="data-value actual-value" id="resultValue">108</span>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-text" id="progressText">22.69% Completion</div>
+                </div>
+            </div>
+            
+            <div class="tooltip-footer">
+                Data Source: Starboard | Updated: Aug 2025
+            </div>
+        </div>
+    </div>
+    
+    <div class="watermark">Performance Dashboard v1.0</div>
+
+    <script>
+        // 嵌入数据
+        const areaData = {
+            'Area China': { result: 108, target: 476 }
+        };
+        
+        // 显示工具提示
+        function showTooltip(event, areaName) {
+            const tooltip = document.getElementById('tooltip');
+            const data = areaData[areaName];
+            
+            // 计算数据
+            const result = data.result;
+            const target = data.target;
+            const percentage = (result / target) * 100;
+            
+            // 更新UI
+            document.getElementById('resultValue').textContent = result;
+            document.getElementById('targetValue').textContent = target;
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+            document.getElementById('progressText').textContent = `${percentage.toFixed(2)}% Completion`;
+            
+            // 定位工具提示
+            const container = event.currentTarget;
+            const containerRect = container.getBoundingClientRect();
+            const scrollY = window.scrollY || window.pageYOffset;
+            
+            tooltip.style.left = `${containerRect.right + 20}px`;
+            tooltip.style.top = `${containerRect.top + scrollY}px`;
+            tooltip.style.display = 'block';
+        }
+        
+        // 隐藏工具提示
+        function hideTooltip() {
+            document.getElementById('tooltip').style.display = 'none';
+        }
+        
+        // 初始化数据
+        const result = 108;
+        const target = 476;
+        const percentage = (result / target) * 100;
+        document.getElementById('progressBar').style.width = `${percentage}%`;
+    </script>
+</body>
+</html>
