@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transparent Performance Dashboard</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Transparent Performance Dashboard</title>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -44,8 +45,8 @@
             border: none;
             box-shadow: none;
             transition: all 0.3s ease;
-            height: 100vh; /* 扩展到整列 */
-            top: 0; /* 从顶部开始 */
+            height: 50vh; /* 限制交互区域在上半部分 */
+            top: 0;
         }
         
         .container:hover {
@@ -170,56 +171,51 @@
             font-size: 11px;
             z-index: 10;
         }
-    </style>
+    
+.container[style*="top: 55vh"] {
+    pointer-events: auto;
+}
+</style>
 </head>
 <body>
-    <!-- 使用您指定的背景图片 -->
-   <img src="new-backgroud.jpg" alt="集装箱背景" class="background">
-    
-    <div class="containers">
-        <!-- 修改后的容器位置 - 保持left不变，高度扩展到整列 -->
-        <div class="container" style="left: 17%; width: 8%;" onmouseover="showTooltip(event, 'Area China')" onmouseout="hideTooltip()"></div>
-        
-        <!-- 新增的七个容器 - 保持left不变，高度扩展到整列 -->
-        <div class="container" style="left: 60%; width: 7%;" onmouseover="showTooltip(event, 'QSC Suzhou')" onmouseout="hideTooltip()"></div>
-        <div class="container" style="left: 26%; width: 6%;" onmouseover="showTooltip(event, 'Area Korea')" onmouseout="hideTooltip()"></div>
-        <div class="container" style="left: 34%; width: 8%;" onmouseover="showTooltip(event, 'Area Japan')" onmouseout="hideTooltip()"></div>
-        <div class="container" style="left: 68%; width: 8%;" onmouseover="showTooltip(event, 'Area Southeast Asia')" onmouseout="hideTooltip()"></div>
-        <div class="container" style="left: 52%; width: 7%;" onmouseover="showTooltip(event, 'QSC Kuala Lumpur')" onmouseout="hideTooltip()"></div>
-        <div class="container" style="left: 43%; width: 8%;" onmouseover="showTooltip(event, 'Area Oceania')" onmouseout="hideTooltip()"></div>
-        <div class="container" style="left: 77%; width: 8%;" onmouseover="showTooltip(event, 'Regional Office')" onmouseout="hideTooltip()"></div>
-        
-        <!-- 工具提示 -->
-        <div class="tooltip" id="tooltip">
-            <!-- Week 1作为小标题 -->
-            <div class="week-title">WEEK 1</div>
-            
-            <div class="data-display">
-                <div class="data-row">
-                    <span class="data-label">Target:</span>
-                    <span class="data-value target-value" id="targetValue">476</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Actual:</span>
-                    <span class="data-value actual-value" id="resultValue">108</span>
-                </div>
+<!-- 使用您指定的背景图片 -->
+<img alt="集装箱背景" class="background" src="new-backgroud.jpg"/>
+<div class="containers">
+<!-- 修改后的容器位置 - 保持left不变，高度扩展到整列 -->
+<div class="container" onmouseout="hideTooltip()" onmouseover="showTooltip(event, 'Area China')" style="left: 16.2%; width: 8%;"></div>
+<!-- 新增的七个容器 - 保持left不变，高度扩展到整列 -->
+<div class="container" onmouseout="hideTooltip()" onmouseover="showTooltip(event, 'QSC Suzhou')" style="left: 24%; width: 8%;"></div>
+<div class="container" onmouseout="hideTooltip()" onmouseover="showTooltip(event, 'Area Korea')" style="left: 32%; width: 8%;"></div>
+<div class="container" onmouseout="hideTooltip()" onmouseover="showTooltip(event, 'Area Japan')" style="left: 39.9%; width: 8%;"></div>
+<div class="container" onmouseout="hideTooltip()" onmouseover="showTooltip(event, 'Area Southeast Asia')" style="left: 47.7%; width: 8%;"></div>
+<div class="container" onmouseout="hideTooltip()" onmouseover="showTooltip(event, 'QSC Kuala Lumpur')" style="left: 55.5%; width: 8%;"></div>
+<div class="container" onmouseout="hideTooltip()" onmouseover="showTooltip(event, 'Area Oceania')" style="left: 63.35%; width: 8%;"></div>
+<div class="container" onmouseout="hideTooltip()" onmouseover="showTooltip(event, 'Regional Office')" style="left: 71.1%; width: 8%;"></div>
+<!-- 工具提示 -->
+<div class="container" onmouseout="hideTooltip()" onmouseover="showTooltip(event, 'Region Asia')" style="left: 37.9%; width: 27.45%; top: 55vh; height: 10vh;"></div><div class="tooltip" id="tooltip">
+<!-- Week 1作为小标题 -->
+<div class="week-title">WEEK 1</div>
+<div class="data-display">
+<div class="data-row">
+<span class="data-label">Target:</span>
+<span class="data-value target-value" id="targetValue">476</span>
+</div>
+<div class="data-row">
+<span class="data-label">Actual:</span>
+<span class="data-value actual-value" id="resultValue">108</span>
+</div>
+</div>
+<div class="progress-container">
+<div class="progress-bar" id="progressBar">
+<div class="progress-text" id="progressText">22.69% Completion</div>
+</div>
+</div>
+<div class="tooltip-footer">
+                Data Source: Starboard | Updated: Sep 2025
             </div>
-            
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar">
-                    <div class="progress-text" id="progressText">22.69% Completion</div>
-                </div>
-            </div>
-            
-            <div class="tooltip-footer">
-                Data Source: Starboard | Updated: Aug 2025
-            </div>
-        </div>
-    </div>
-    
-  
-
-    <script>
+</div>
+</div>
+<script>
         // 嵌入数据 - 扩展为八组数据
         const areaData = {
             'Area China': { result: 63, target: 379 },
@@ -230,7 +226,8 @@
             'QSC Kuala Lumpur': { result: 23, target: 192 },
             'Area Oceania': { result: 5, target: 77 },
             'Regional Office': { result: 43, target: 266 }
-        };
+        ,
+'Region Asia': { result: 330, target: 1923 }};
         
         // 显示工具提示
         function showTooltip(event, areaName) {
@@ -286,5 +283,3 @@
     </script>
 </body>
 </html>
-
-
